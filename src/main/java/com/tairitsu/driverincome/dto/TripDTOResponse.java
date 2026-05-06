@@ -19,7 +19,6 @@ public class TripDTOResponse {
     @NotNull
     @DecimalMin("0.0")
     private BigDecimal netIncome;
-    @NotNull
     @DecimalMin("0.0")
     private BigDecimal tip;
     @NotNull

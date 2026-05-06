@@ -8,6 +8,9 @@ import com.tairitsu.driverincome.repository.TripRepository;
 import com.tairitsu.driverincome.service.TripService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 @Service
 public class TripServiceImplement implements TripService {
     private final TripRepository tripRepository;
@@ -17,9 +20,10 @@ public class TripServiceImplement implements TripService {
     @Override
     public TripDTOResponse createTrip(TripDTORequest req) {
         Trip trip = TripMapper.mapToTrip(req);
-        trip.setTotal(
-                trip.getNetIncome().add(trip.getTip())
-        );
+        BigDecimal tip = Optional.ofNullable(trip.getTip())
+                .orElse(BigDecimal.ZERO);
+        trip.setTip(tip);
+        trip.setTotal(trip.getNetIncome().add(tip));
         Trip saved = tripRepository.save(trip);
         return TripMapper.mapToTripDTOResponse(saved);
     }
