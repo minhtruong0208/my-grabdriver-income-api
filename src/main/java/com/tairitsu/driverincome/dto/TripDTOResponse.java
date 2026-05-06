@@ -1,7 +1,6 @@
 package com.tairitsu.driverincome.dto;
 
 import com.tairitsu.driverincome.entity.TripType;
-import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;

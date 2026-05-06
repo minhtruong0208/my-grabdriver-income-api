@@ -3,6 +3,7 @@ package com.tairitsu.driverincome.service.implement;
 import com.tairitsu.driverincome.dto.TripDTORequest;
 import com.tairitsu.driverincome.dto.TripDTOResponse;
 import com.tairitsu.driverincome.entity.Trip;
+import com.tairitsu.driverincome.exception.custom.ResourceNotFoundException;
 import com.tairitsu.driverincome.mapper.TripMapper;
 import com.tairitsu.driverincome.repository.TripRepository;
 import com.tairitsu.driverincome.service.TripService;
@@ -26,5 +27,12 @@ public class TripServiceImplement implements TripService {
         trip.setTotal(trip.getNetIncome().add(tip));
         Trip saved = tripRepository.save(trip);
         return TripMapper.mapToTripDTOResponse(saved);
+    }
+    @Override
+    public void deleteTrip(Long id) {
+        if (!tripRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Trip not found with id = " + id);
+        }
+        tripRepository.deleteById(id);
     }
 }

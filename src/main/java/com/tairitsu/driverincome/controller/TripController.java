@@ -20,4 +20,9 @@ public class TripController {
     public ResponseEntity<@NonNull TripDTOResponse> addTrip(@Valid @RequestBody TripDTORequest req) {
         return new ResponseEntity<>(tripService.createTrip(req), HttpStatus.CREATED);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<@NonNull Void> deleteTrip(@PathVariable Long id) {
+        tripService.deleteTrip(id);
+        return ResponseEntity.noContent().build();
+    }
 }
