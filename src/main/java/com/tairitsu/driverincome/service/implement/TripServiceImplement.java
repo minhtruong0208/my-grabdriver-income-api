@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Service
 public class TripServiceImplement implements TripService {
     private final TripRepository tripRepository;
