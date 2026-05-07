@@ -10,6 +10,7 @@ import com.tairitsu.driverincome.service.TripService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
@@ -35,5 +36,15 @@ public class TripServiceImplement implements TripService {
             throw new ResourceNotFoundException("Trip not found with id = " + id);
         }
         tripRepository.deleteById(id);
+    }
+    @Override
+    public TripDTOResponse getTrip(Long id) {
+        Trip trip = tripRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Trip not found with id = " + id));
+        return TripMapper.mapToTripDTOResponse(trip);
+    }
+    @Override
+    public List<TripDTOResponse> getAllTrip(){
+        List<Trip> trips = tripRepository.findAll();
+        return trips.stream().map(TripMapper::mapToTripDTOResponse).toList();
     }
 }
