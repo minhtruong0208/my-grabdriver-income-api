@@ -47,4 +47,11 @@ public class TripServiceImplement implements TripService {
         List<Trip> trips = tripRepository.findAll();
         return trips.stream().map(TripMapper::mapToTripDTOResponse).toList();
     }
+    @Override
+    public TripDTOResponse updateTrip(Long id, TripDTORequest req) {
+        Trip existedTrip = tripRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Trip not found with id = " + id));
+        TripMapper.updateTripFromRequest(req, existedTrip);
+        Trip udatedTrip = tripRepository.save(existedTrip);
+        return TripMapper.mapToTripDTOResponse(udatedTrip);
+    }
 }

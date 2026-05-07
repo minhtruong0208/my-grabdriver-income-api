@@ -2,7 +2,6 @@ package com.tairitsu.driverincome.controller;
 
 import com.tairitsu.driverincome.dto.TripDTORequest;
 import com.tairitsu.driverincome.dto.TripDTOResponse;
-import com.tairitsu.driverincome.entity.Trip;
 import com.tairitsu.driverincome.service.TripService;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -38,5 +37,9 @@ public class TripController {
     public ResponseEntity<@NonNull List<TripDTOResponse>> getAllTrip() {
         List<TripDTOResponse> trips = tripService.getAllTrip();
         return ResponseEntity.ok(trips);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<@NonNull TripDTOResponse> updateTrip(@PathVariable Long id, @Valid @RequestBody TripDTORequest req) {
+        return ResponseEntity.ok(tripService.updateTrip(id, req));
     }
 }

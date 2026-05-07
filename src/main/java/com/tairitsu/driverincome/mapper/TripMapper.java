@@ -5,6 +5,8 @@ import com.tairitsu.driverincome.dto.TripDTOResponse;
 import com.tairitsu.driverincome.entity.Trip;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class TripMapper {
     public static Trip mapToTrip(TripDTORequest req) {
@@ -27,5 +29,13 @@ public class TripMapper {
                 trip.getDistance(),
                 trip.getTypeOfTrip()
         );
+    }
+
+    public static void updateTripFromRequest(TripDTORequest req, Trip trip) {
+        trip.setStartTime(req.getStartTime());
+        trip.setNetIncome(req.getNetIncome());
+        trip.setTip(req.getTip() != null ? req.getTip() : BigDecimal.ZERO);
+        trip.setDistance(req.getDistance());
+        trip.setTypeOfTrip(req.getTypeOfTrip());
     }
 }

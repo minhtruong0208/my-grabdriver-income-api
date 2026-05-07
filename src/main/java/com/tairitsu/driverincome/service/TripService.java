@@ -10,4 +10,5 @@ public interface TripService {
     void deleteTrip(Long id);
     TripDTOResponse getTrip(Long id);
     List<TripDTOResponse> getAllTrip();
+    TripDTOResponse updateTrip(Long id, TripDTORequest req);
 }
