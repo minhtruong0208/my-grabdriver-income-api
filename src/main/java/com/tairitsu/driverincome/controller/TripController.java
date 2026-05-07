@@ -4,7 +4,10 @@ import com.tairitsu.driverincome.dto.TripDTORequest;
 import com.tairitsu.driverincome.dto.TripDTOResponse;
 import com.tairitsu.driverincome.service.TripService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +36,7 @@ public class TripController {
         TripDTOResponse trip = tripService.getTrip(id);
         return ResponseEntity.ok(trip);
     }
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<@NonNull List<TripDTOResponse>> getAllTrip() {
         List<TripDTOResponse> trips = tripService.getAllTrip();
         return ResponseEntity.ok(trips);
@@ -41,5 +44,14 @@ public class TripController {
     @PutMapping("/{id}")
     public ResponseEntity<@NonNull TripDTOResponse> updateTrip(@PathVariable Long id, @Valid @RequestBody TripDTORequest req) {
         return ResponseEntity.ok(tripService.updateTrip(id, req));
+    }
+    @GetMapping
+    public ResponseEntity<Page<TripDTOResponse>> getTrips(
+            @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page index cannot be negative") int page,
+            @RequestParam(defaultValue = "10") @Positive(message = "Page size must be greater than zero") int size
+    ) {
+        return ResponseEntity.ok(
+                tripService.getTrips(page, size)
+        );
     }
 }

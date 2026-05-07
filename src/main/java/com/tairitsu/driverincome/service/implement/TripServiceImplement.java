@@ -7,6 +7,9 @@ import com.tairitsu.driverincome.exception.custom.ResourceNotFoundException;
 import com.tairitsu.driverincome.mapper.TripMapper;
 import com.tairitsu.driverincome.repository.TripRepository;
 import com.tairitsu.driverincome.service.TripService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -53,5 +56,11 @@ public class TripServiceImplement implements TripService {
         TripMapper.updateTripFromRequest(req, existedTrip);
         Trip udatedTrip = tripRepository.save(existedTrip);
         return TripMapper.mapToTripDTOResponse(udatedTrip);
+    }
+    @Override
+    public Page<TripDTOResponse> getTrips(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Trip> trips = tripRepository.findAll(pageable);
+        return trips.map(TripMapper::mapToTripDTOResponse);
     }
 }

@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
@@ -26,6 +28,25 @@ public class GlobalExceptionHandler {
         response.put("code", "VALIDATION_ERROR");
         response.put("message", "Invalid request");
         response.put("errors", errors);
+        return ResponseEntity.badRequest().body(response);
+    }
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<?> handleHandlerMethodValidation(
+            HandlerMethodValidationException ex
+    ) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("code", "VALIDATION_ERROR");
+        response.put("message", "Invalid request");
+
+        List<String> errors = ex.getAllErrors()
+                .stream()
+                .map(error -> error.getDefaultMessage())
+                .toList();
+
+        response.put("errors", errors);
+
         return ResponseEntity.badRequest().body(response);
     }
     @ExceptionHandler(ResourceNotFoundException.class)
