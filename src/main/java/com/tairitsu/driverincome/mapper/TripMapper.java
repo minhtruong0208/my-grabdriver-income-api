@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
 public class TripMapper {
     public static Trip mapToTrip(TripDTORequest req) {
         Trip trip = new Trip();
