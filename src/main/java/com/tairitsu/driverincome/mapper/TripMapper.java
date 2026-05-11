@@ -1,7 +1,7 @@
 package com.tairitsu.driverincome.mapper;
 
-import com.tairitsu.driverincome.dto.TripDTORequest;
-import com.tairitsu.driverincome.dto.TripDTOResponse;
+import com.tairitsu.driverincome.dto.request.TripDTORequest;
+import com.tairitsu.driverincome.dto.response.TripDTOResponse;
 import com.tairitsu.driverincome.entity.Trip;
 import org.springframework.stereotype.Component;
 

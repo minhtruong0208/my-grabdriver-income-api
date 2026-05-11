@@ -1,7 +1,7 @@
 package com.tairitsu.driverincome.service.implement;
 
-import com.tairitsu.driverincome.dto.TripDTORequest;
-import com.tairitsu.driverincome.dto.TripDTOResponse;
+import com.tairitsu.driverincome.dto.request.TripDTORequest;
+import com.tairitsu.driverincome.dto.response.TripDTOResponse;
 import com.tairitsu.driverincome.entity.Trip;
 import com.tairitsu.driverincome.exception.custom.ResourceNotFoundException;
 import com.tairitsu.driverincome.mapper.TripMapper;

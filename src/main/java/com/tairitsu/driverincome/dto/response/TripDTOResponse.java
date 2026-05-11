@@ -1,4 +1,4 @@
-package com.tairitsu.driverincome.dto;
+package com.tairitsu.driverincome.dto.response;
 
 import com.tairitsu.driverincome.entity.TripType;
 import jakarta.validation.constraints.NotNull;

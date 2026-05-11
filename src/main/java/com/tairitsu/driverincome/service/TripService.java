@@ -1,7 +1,7 @@
 package com.tairitsu.driverincome.service;
 
-import com.tairitsu.driverincome.dto.TripDTORequest;
-import com.tairitsu.driverincome.dto.TripDTOResponse;
+import com.tairitsu.driverincome.dto.request.TripDTORequest;
+import com.tairitsu.driverincome.dto.response.TripDTOResponse;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

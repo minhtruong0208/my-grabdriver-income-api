@@ -1,7 +1,7 @@
 package com.tairitsu.driverincome.controller;
 
-import com.tairitsu.driverincome.dto.TripDTORequest;
-import com.tairitsu.driverincome.dto.TripDTOResponse;
+import com.tairitsu.driverincome.dto.request.TripDTORequest;
+import com.tairitsu.driverincome.dto.response.TripDTOResponse;
 import com.tairitsu.driverincome.service.TripService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
