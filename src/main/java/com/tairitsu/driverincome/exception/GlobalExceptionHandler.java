@@ -3,6 +3,7 @@ package com.tairitsu.driverincome.exception;
 import com.tairitsu.driverincome.exception.custom.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,5 +57,13 @@ public class GlobalExceptionHandler {
                         "message", ex.getMessage(),
                         "status", 404
                 ));
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleInvalidEnum(
+            HttpMessageNotReadableException ex
+    ) {
+
+        return ResponseEntity.badRequest()
+                .body("Invalid request body");
     }
 }
