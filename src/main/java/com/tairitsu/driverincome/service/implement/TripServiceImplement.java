@@ -54,6 +54,9 @@ public class TripServiceImplement implements TripService {
     public TripDTOResponse updateTrip(Long id, TripDTORequest req) {
         Trip existedTrip = tripRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Trip not found with id = " + id));
         TripMapper.updateTripFromRequest(req, existedTrip);
+        BigDecimal tip = Optional.ofNullable(existedTrip.getTip()).orElse(BigDecimal.ZERO);
+        existedTrip.setTip(tip);
+        existedTrip.setTotal(existedTrip.getNetIncome().add(tip));
         Trip udatedTrip = tripRepository.save(existedTrip);
         return TripMapper.mapToTripDTOResponse(udatedTrip);
     }

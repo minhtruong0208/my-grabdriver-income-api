@@ -48,10 +48,7 @@ public class TripController {
     @GetMapping
     public ResponseEntity<Page<TripDTOResponse>> getTrips(
             @RequestParam(defaultValue = "0") @Min(value = 0, message = "Page index cannot be negative") int page,
-            @RequestParam(defaultValue = "10") @Positive(message = "Page size must be greater than zero") int size
-    ) {
-        return ResponseEntity.ok(
-                tripService.getTrips(page, size)
-        );
+            @RequestParam(defaultValue = "10") @Positive(message = "Page size must be greater than zero") int size) {
+        return ResponseEntity.ok(tripService.getTrips(page, size));
     }
 }
