@@ -31,6 +31,9 @@ public class IncomeServiceImplement implements IncomeService {
     }
     @Override
     public IncomeDTOResponse getMonthlyIncome(int year, int month) {
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Month must be between 1 and 12");
+        }
         LocalDateTime startOfMonth = LocalDate.of(year, month, 1).atStartOfDay();
         LocalDateTime endOfMonth = startOfMonth.plusMonths(1);
         BigDecimal totalTripIncome = tripRepository.sumTripIncomeBetween(startOfMonth, endOfMonth);

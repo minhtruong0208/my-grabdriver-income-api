@@ -1,6 +1,7 @@
 package com.tairitsu.driverincome.exception;
 
 import com.tairitsu.driverincome.exception.custom.ResourceNotFoundException;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -32,22 +33,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
     @ExceptionHandler(HandlerMethodValidationException.class)
-    public ResponseEntity<?> handleHandlerMethodValidation(
-            HandlerMethodValidationException ex
-    ) {
-
+    public ResponseEntity<?> handleHandlerMethodValidation(HandlerMethodValidationException ex) {
         Map<String, Object> response = new HashMap<>();
-
         response.put("code", "VALIDATION_ERROR");
         response.put("message", "Invalid request");
-
         List<String> errors = ex.getAllErrors()
                 .stream()
-                .map(error -> error.getDefaultMessage())
+                .map(MessageSourceResolvable::getDefaultMessage)
                 .toList();
-
         response.put("errors", errors);
-
         return ResponseEntity.badRequest().body(response);
     }
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -59,11 +53,21 @@ public class GlobalExceptionHandler {
                 ));
     }
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleInvalidEnum(
-            HttpMessageNotReadableException ex
-    ) {
-
-        return ResponseEntity.badRequest()
-                .body("Invalid request body");
+    public ResponseEntity<?> handleInvalidEnum(HttpMessageNotReadableException ex) {
+        return ResponseEntity.badRequest().body(
+                Map.of(
+                        "code", "INVALID_REQUEST_BODY",
+                        "message", "Invalid request body"
+                )
+        );
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(
+                Map.of(
+                        "code", "INVALID_ARGUMENT",
+                        "message", ex.getMessage()
+                )
+        );
     }
 }
