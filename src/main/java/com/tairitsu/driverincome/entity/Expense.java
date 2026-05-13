@@ -21,6 +21,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal amount;
+    @Enumerated(EnumType.STRING)
     private ExpenseType typeOfExpense;
     private LocalDateTime expenseDate;
     private String note;
