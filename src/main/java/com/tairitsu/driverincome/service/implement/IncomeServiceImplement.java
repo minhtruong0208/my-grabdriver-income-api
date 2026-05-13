@@ -10,7 +10,19 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+/**
+ * Service implementation for calculating driver income statistics.
+ * <p>This service provides:
+ * <ul>
+ *     <li>Daily income reports</li>
+ *     <li>Monthly income reports</li>
+ *     <li>Net income calculation</li>
+ * </ul>
+ * <p>Net income is calculated as:
+ * <pre>
+ * net income = total trip income - total expense
+ * </pre>
+ */
 @Service
 public class IncomeServiceImplement implements IncomeService {
     private final TripRepository tripRepository;
@@ -19,7 +31,21 @@ public class IncomeServiceImplement implements IncomeService {
         this.tripRepository = tripRepository;
         this.expenseRepository = expenseRepository;
     }
-
+    /**
+     * Calculates income statistics for a specific day.
+     * <p>The calculation includes:
+     * <ul>
+     *     <li>Total trip income</li>
+     *     <li>Total expenses</li>
+     *     <li>Net income</li>
+     * </ul>
+     * <p>The queried time range is:
+     * <pre>
+     * [startOfDay, startOfNextDay)
+     * </pre>
+     * @param date target date
+     * @return daily income summary
+     */
     @Override
     public IncomeDTOResponse getDailyIncome(LocalDate date) {
         LocalDateTime startOfDay = date.atStartOfDay();
@@ -29,6 +55,15 @@ public class IncomeServiceImplement implements IncomeService {
         BigDecimal netIncome = totalTripIncome.subtract(totalExpense);
         return new IncomeDTOResponse(totalTripIncome, totalExpense, netIncome, date.toString());
     }
+    /**
+     * Calculates income statistics for a specific month.
+     * <p>The queried time range starts from the first day of the month
+     * and ends before the first day of the next month.
+     * @param year target year
+     * @param month target month (1-12)
+     * @return monthly income summary
+     * @throws IllegalArgumentException if month is outside the range 1-12
+     */
     @Override
     public IncomeDTOResponse getMonthlyIncome(int year, int month) {
         if (month < 1 || month > 12) {

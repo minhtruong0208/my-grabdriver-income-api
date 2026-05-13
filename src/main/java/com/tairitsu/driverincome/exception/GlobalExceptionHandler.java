@@ -14,9 +14,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Global exception handler for REST APIs.
+ * <p>This class centralizes exception handling and converts
+ * application exceptions into standardized HTTP responses.
+ * <p>Handled exception categories include:
+ * <ul>
+ *     <li>Validation errors</li>
+ *     <li>Resource not found errors</li>
+ *     <li>Malformed request bodies</li>
+ *     <li>Illegal arguments</li>
+ * </ul>
+ */
 @SuppressWarnings("unused")
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    /**
+     * Handles request body validation errors triggered by @Valid.
+     * <p>Returns field-specific validation messages.
+     * @param ex validation exception
+     * @return HTTP 400 response containing validation details
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
@@ -32,6 +50,12 @@ public class GlobalExceptionHandler {
         response.put("errors", errors);
         return ResponseEntity.badRequest().body(response);
     }
+    /**
+     * Handles validation errors for method parameters such as
+     * @RequestParam and @PathVariable.
+     * @param ex validation exception
+     * @return HTTP 400 response containing validation messages
+     */
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<?> handleHandlerMethodValidation(HandlerMethodValidationException ex) {
         Map<String, Object> response = new HashMap<>();
@@ -44,6 +68,11 @@ public class GlobalExceptionHandler {
         response.put("errors", errors);
         return ResponseEntity.badRequest().body(response);
     }
+    /**
+     * Handles resource-not-found exceptions.
+     * @param ex resource not found exception
+     * @return HTTP 404 response
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -52,6 +81,12 @@ public class GlobalExceptionHandler {
                         "status", 404
                 ));
     }
+    /**
+     * Handles invalid enum values in request bodies,
+     * such as unsupported trip or expense types.
+     * @param ex request parsing exception
+     * @return HTTP 400 response
+     */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleInvalidEnum(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(
@@ -61,6 +96,11 @@ public class GlobalExceptionHandler {
                 )
         );
     }
+    /**
+     * Handles illegal argument exceptions thrown by business logic.
+     * @param ex illegal argument exception
+     * @return HTTP 400 response
+     */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(
