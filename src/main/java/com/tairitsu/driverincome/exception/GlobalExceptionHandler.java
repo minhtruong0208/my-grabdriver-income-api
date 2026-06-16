@@ -5,6 +5,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -107,6 +108,16 @@ public class GlobalExceptionHandler {
                 Map.of(
                         "code", "INVALID_ARGUMENT",
                         "message", ex.getMessage()
+                )
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> handleAuthentication(AuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                Map.of(
+                        "code", "AUTHENTICATION_FAILED",
+                        "message", "Invalid username or password"
                 )
         );
     }
